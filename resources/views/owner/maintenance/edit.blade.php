@@ -7,6 +7,9 @@
 @endsection
 
 @section('content')
+@php
+    $maintenance = $maintenance ?? $record;
+@endphp
 <div class="page-header">
     <h4>Edit Maintenance</h4>
 </div>
@@ -36,7 +39,7 @@
                 </div>
                 <div class="col-md-6">
                     <label class="form-label">Tanggal Terjadwal <span class="text-danger">*</span></label>
-                    <input type="date" name="scheduled_date" class="form-control" value="{{ old('scheduled_date', $maintenance->scheduled_date->format('Y-m-d')) }}" required>
+                    <input type="date" name="scheduled_date" class="form-control" value="{{ old('scheduled_date', $maintenance->scheduled_date?->format('Y-m-d')) }}" required>
                 </div>
                 <div class="col-md-6">
                     <label class="form-label">Tanggal Selesai</label>
