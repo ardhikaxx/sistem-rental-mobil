@@ -6,6 +6,9 @@
 @endsection
 
 @section('content')
+@php
+    $maintenances = $maintenances ?? $records ?? collect();
+@endphp
 <div class="page-header">
     <h4>Manajemen Maintenance</h4>
     <a href="{{ route('owner.maintenance.create') }}" class="btn btn-primary"><i class="fas fa-plus me-1"></i>Tambah Maintenance</a>
@@ -28,9 +31,9 @@
                 <tbody>
                     @forelse($maintenances as $m)
                     <tr>
-                        <td><strong>{{ $m->vehicle->license_plate }}</strong> <small class="text-muted">({{ $m->vehicle->brand }} {{ $m->vehicle->model }})</small></td>
+                        <td><strong>{{ $m->vehicle?->license_plate ?? '-' }}</strong> <small class="text-muted">({{ $m->vehicle?->brand }} {{ $m->vehicle?->model }})</small></td>
                         <td><span class="badge bg-info">{{ ucfirst($m->type) }}</span></td>
-                        <td>{{ $m->scheduled_date->format('d M Y') }}</td>
+                        <td>{{ $m->scheduled_date?->format('d M Y') ?? '-' }}</td>
                         <td>Rp {{ number_format($m->estimated_cost ?? 0, 0, ',', '.') }}</td>
                         <td><span class="badge {{ $m->status_badge_class }}">{{ $m->status_label }}</span></td>
                         <td>
@@ -44,7 +47,9 @@
                 </tbody>
             </table>
         </div>
-        {{ $maintenances->links() }}
+        @if(method_exists($maintenances, 'links'))
+            {{ $maintenances->links() }}
+        @endif
     </div>
 </div>
 @endsection
