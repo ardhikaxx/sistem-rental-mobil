@@ -7,6 +7,9 @@
 @endsection
 
 @section('content')
+@php
+    $maintenance = $maintenance ?? $record;
+@endphp
 <div class="page-header">
     <h4>Detail Maintenance <span class="badge {{ $maintenance->status_badge_class }} ms-2">{{ $maintenance->status_label }}</span></h4>
     <div class="d-flex gap-2">
@@ -24,14 +27,14 @@
             <div class="card-header"><i class="fas fa-wrench me-2"></i>Informasi Maintenance</div>
             <div class="card-body">
                 <table class="table table-borderless mb-0">
-                    <tr><th width="160">Kendaraan</th><td><a href="{{ route('owner.vehicles.show', $maintenance->vehicle) }}">{{ $maintenance->vehicle->license_plate }} - {{ $maintenance->vehicle->brand }} {{ $maintenance->vehicle->model }}</a></td></tr>
+                    <tr><th width="160">Kendaraan</th><td><a href="{{ route('owner.vehicles.show', $maintenance->vehicle) }}">{{ $maintenance->vehicle?->license_plate ?? '-' }} - {{ $maintenance->vehicle?->brand }} {{ $maintenance->vehicle?->model }}</a></td></tr>
                     <tr><th>Tipe</th><td><span class="badge bg-info">{{ ucfirst($maintenance->type) }}</span></td></tr>
-                    <tr><th>Tanggal Terjadwal</th><td>{{ $maintenance->scheduled_date->format('d M Y') }}</td></tr>
-                    <tr><th>Tanggal Selesai</th><td>{{ $maintenance->completed_date ? $maintenance->completed_date->format('d M Y') : '-' }}</td></tr>
+                    <tr><th>Tanggal Terjadwal</th><td>{{ $maintenance->scheduled_date?->format('d M Y') ?? '-' }}</td></tr>
+                    <tr><th>Tanggal Selesai</th><td>{{ $maintenance->completed_date?->format('d M Y') ?? '-' }}</td></tr>
                     <tr><th>Estimasi Biaya</th><td>Rp {{ number_format($maintenance->estimated_cost ?? 0, 0, ',', '.') }}</td></tr>
                     <tr><th>Biaya Aktual</th><td><strong>Rp {{ number_format($maintenance->actual_cost ?? 0, 0, ',', '.') }}</strong></td></tr>
                     <tr><th>Odometer</th><td>{{ $maintenance->odometer_reading ? number_format($maintenance->odometer_reading) . ' km' : '-' }}</td></tr>
-                    <tr><th>Deskripsi</th><td>{{ $maintenance->description }}</td></tr>
+                    <tr><th>Deskripsi</th><td>{{ $maintenance->description ?? '-' }}</td></tr>
                     <tr><th>Catatan</th><td>{{ $maintenance->notes ?? '-' }}</td></tr>
                 </table>
             </div>
